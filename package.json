@@ -1,0 +1,21 @@
+{
+  "name": "lythiumproxy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "4azgin <max.benamara@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "@linode/api-v4": "^0.33.0",
+    "ascii-art": "^2.5.0",
+    "ascii-art-font": "^1.0.2",
+    "ascii-art-image": "^1.2.2",
+    "figlet": "^1.5.0",
+    "proxy-checker": "^1.0.0",
+    "terminal-kit": "^1.43.0"
+  }
+}
