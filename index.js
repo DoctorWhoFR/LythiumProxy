@@ -111,51 +111,34 @@ function menu(){
         '<3 discord.gg/lazone <3'
     ] ;
 
-    term.singleColumnMenu( items , function( error , response ) {
+    term.singleColumnMenu( items , async function( error , response ) {
         if(response.selectedIndex == 0){
 
             term.clear();
-
+            var region = "";
             term.bgRed.white("/!\/ Attentions, utiliser des informations DE MERDE pour les comptes linodes /!\/ \n")
 
-            term( 'Merci de préciser le nombre de serveur: ' ) ;
+            term( 'Merci de préciser la région: ' ) ;
 
-            term.inputField(null,
+            var autoComplete = [
+                'us-west' ,
+            ] ;
 
-                function( error , input ) {
+            term.inputField({
+                autoComplete: autoComplete , autoCompleteHint: true ,
+                autoCompleteMenu: true},
 
+                function( error , region ) {
+                    
                     term("\n")
-
-                    var server_number = parseInt(input);
-
-                    for (let index = 0; index < server_number;) {
-                        
-                        createLinode({
-                            "image": "linode/debian10",
-                            "root_pass": "hax4r_lythium",
-                            "booted": true,
-                            "label": "LythiumProxy-" + index,
-                            "type": "g6-nanode-1",
-                            "region": "us-east",
-                            "stackscript_id": 670597
-                        }).then( created => {
-                            term.blue("#"+index).green(" | " + created.label).green(" | Ip: " + created.ipv4[0] + ':3128' + '\n')  
-                        }).catch( error => {
-                            console.log(error.data);
-                        });
-
-                        index++;
-                        
-                    }
-
-                    setTimeout(() => {
-                        term.clear();
-                        menu();
-                    }, 3000 * parseInt(input));
-
-
+                    
+                    createServer(region)
                 }
             ) ;
+
+           
+
+          
         }
         if(response.selectedIndex == 1){
             term.clear();
@@ -216,7 +199,7 @@ function menu(){
                     setTimeout(() => {
                         term.clear();
                         menu();
-                    }, 2000 * parseInt(linodes.data.length));
+                    }, 500 * parseInt(linodes.data.length));
                 }
 
 
@@ -236,4 +219,46 @@ function menu(){
             }, 2000);
         }
     } ) ;
+}
+
+function createServer(region) {
+    term( 'Merci de préciser le nombre de serveur: ' ) ;
+    term.inputField(null,
+
+        async function( error , input ) {
+
+            term("\n")
+
+            var server_number = parseInt(input);
+
+            for (let index = 0; index < server_number;) {
+                
+                await createLinode({
+                    "image": "linode/debian10",
+                    "root_pass": "hax4r_lythium",
+                    "booted": true,
+                    "label": "Lythium" + Math.floor(Math.random() * 1000),
+                    "type": "g6-nanode-1",
+                    "region": region,
+                    "stackscript_id": 670597
+                }).then( created => {
+                     term.blue("#"+index).green(" | " + created.label).green(" | Ip: " + created.ipv4[0] + ':3128' + '\n')  
+                }).catch( error => {
+                    index = server_number;
+                    term.clear();
+                    menu();
+                });
+
+                index++;
+                
+            }
+
+            setTimeout(() => {
+                term.clear();
+                menu();
+            }, 1000 * parseInt(input));
+
+
+        }
+    ) ;
 }

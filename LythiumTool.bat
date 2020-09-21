@@ -1,4 +1,4 @@
 @echo off
 title LythiumTools V1
-node ./index.js
+node C:\Users\maxbe\Desktop\lythiumproxy/index.js
 pause
